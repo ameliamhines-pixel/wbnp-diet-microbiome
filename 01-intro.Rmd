@@ -5,6 +5,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # Exploratory
 
 ## Libraries
@@ -317,4 +318,3 @@ order_abundance_samples <-
 order_abundance_samples
 
 ```
-
