@@ -1,0 +1,56 @@
+tax_id	abundance	species	genus	family	order	class	phylum	clade	superkingdom	subspecies	species subgroup	species group	estimated counts
+2098458669	0.10106567064962292	Enterococcus faecalis	Enterococcus	Enterococcaceae	Lactobacillales	Bacilli	Bacillota	50536905.0	Bacteria				311.98972529538594
+1912282953	0.02194950808155624	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	959025.0	Bacteria				67.75813144776411
+1551022928	0.07529778778991868	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	28743795.0	Bacteria				232.44427090747897
+164925379	0.028858413048689604	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	50473665.0	Bacteria				89.0859210813048
+1232110392	0.008743679982462168	Staphylococcus aureus	Staphylococcus	Staphylococcaceae	Staphylococcales	Bacilli	Bacillota	20388965.0	Bacteria				26.991740105860714
+1927892535	0.020444757954041146	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	900445425.0	Bacteria				63.11296780412501
+1175330689	0.0485374267235276	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	6364495.0	Bacteria				149.8350362955297
+425236140	0.07186258258180943	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	52381035.0	Bacteria				221.83979243004572
+2121393893	0.03167815974525669	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	146565.0	Bacteria				97.79047913360739
+513005714	0.03769132969760379	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	5153965.0	Bacteria				116.3531347765029
+1661637528	0.028325148585894404	Staphylococcus aureus	Staphylococcus	Staphylococcaceae	Staphylococcales	Bacilli	Bacillota	6370485.0	Bacteria				87.43973368465602
+1115906319	0.03200324361007205	Staphylococcus aureus	Staphylococcus	Staphylococcaceae	Staphylococcales	Bacilli	Bacillota	5153985.0	Bacteria				98.79401302429241
+1303813242	0.0248675909592005	Staphylococcus aureus	Staphylococcus	Staphylococcaceae	Staphylococcales	Bacilli	Bacillota	28743615.0	Bacteria				76.76625329105194
+374899270	0.00806795343827825	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	307615.0	Bacteria				24.905772263964955
+1587172773	0.005614942199071636	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	8285.0	Bacteria				17.33332656853414
+453109754	0.007668535244544433	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	800335.0	Bacteria				23.672768299908665
+1952628461	0.11947132554916032	Limosilactobacillus fermentum	Limosilactobacillus	Lactobacillaceae	Lactobacillales	Bacilli	Bacillota	30770375.0	Bacteria				368.8079819702579
+233750687	0.008181688518405813	Limosilactobacillus fermentum	Limosilactobacillus	Lactobacillaceae	Lactobacillales	Bacilli	Bacillota	30845215.0	Bacteria				25.256872456318742
+2048851572	0.004862414870299352	Enterococcus faecalis	Enterococcus	Enterococcaceae	Lactobacillales	Bacilli	Bacillota	23612035.0	Bacteria				15.010274704614101
+791482847	0.015267915662618526	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	28743635.0	Bacteria				47.13205565050339
+1229624037	0.015025945959124418	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	6370495.0	Bacteria				46.38509517581708
+989182054	0.019566236875474582	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	16117835.0	Bacteria				60.40097323459003
+970852594	0.018920743119954345	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	5154105.0	Bacteria				58.40833401129906
+1505131942	0.007453274990003008	Staphylococcus aureus	Staphylococcus	Staphylococcaceae	Staphylococcales	Bacilli	Bacillota	18622975.0	Bacteria				23.008259894139286
+1946925054	0.00770335799275671	Bacillus spizizenii	Bacillus	Bacillaceae	Bacillales	Bacilli	Bacillota	743215.0	Bacteria				23.780266123639965
+37302684	0.009248086905176886	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	51798085.0	Bacteria				28.548844276281045
+1027717632	0.011504323984493515	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	49619985.0	Bacteria				35.51384814013148
+1609772307	0.015930241031561196	Limosilactobacillus fermentum	Limosilactobacillus	Lactobacillaceae	Lactobacillales	Bacilli	Bacillota	5341425.0	Bacteria				49.176654064429414
+817008991	0.0064118055021717265	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	16775765.0	Bacteria				19.79324358520412
+1719452148	0.008195457130149996	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	18106265.0	Bacteria				25.29937616077304
+58067153	0.007154785115153341	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	51797645.0	Bacteria				22.086821650478363
+1168897650	0.00844417584230682	Faecousia sp000434635	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	46941965.0	Bacteria				26.067170825201153
+1598144653	0.010321332098552455	Faecousia sp000434635	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	928721865.0	Bacteria				31.861952188231427
+212210421	0.014310580061136467	Faecousia sp900544945	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	902485565.0	Bacteria				44.176760648728276
+1460018723	0.0070923603297179	Faecousia sp900540635	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	41329315.0	Bacteria				21.894116337839158
+2069833551	0.009297287113482423	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	51795535.0	Bacteria				28.700725319320238
+1108674346	0.0071459008461713484	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	438665.0	Bacteria				22.059395912130952
+436988650	0.008016669572868004	Escherichia coli	Escherichia	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	5153645.0	Bacteria				24.74745897144353
+1556514633	0.005335884340434338	Escherichia coli	Escherichia	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	768505.0	Bacteria				16.4718749589208
+1757743065	0.010295000346496826	Escherichia coli	Escherichia	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	28743555.0	Bacteria				31.780666069635704
+1060269940	0.006984362056050335	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	900275645.0	Bacteria				21.560725667027384
+1273943979	0.008992060741494442	Limosilactobacillus fermentum	Limosilactobacillus	Lactobacillaceae	Lactobacillales	Bacilli	Bacillota	51045955.0	Bacteria				27.75849150899334
+1030280635	0.008572693126010143	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	51797255.0	Bacteria				26.46390367999331
+85299713	0.011999866349611078	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	2206565.0	Bacteria				37.0435874212494
+1375045745	0.004211208292840946	HGM04593 sp900769465	HGM04593	Bacteroidaceae	Bacteroidales	Bacteroidia	Bacteroidota	902486925.0	Bacteria				13.0
+1107042174	0.010366051182377713	Cryptobacteroides sp021153285	Cryptobacteroides	UBA932	Bacteroidales	Bacteroidia	Bacteroidota	45132815.0	Bacteria				32.0
+159813015	0.005788284245128171	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	44792545.0	Bacteria				17.868433464710662
+2046749144	0.0074580393545364615	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	36821985.0	Bacteria				23.022967487454057
+2004608515	0.007494890281893438	Salmonella enterica	Salmonella	Enterobacteriaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	26873485.0	Bacteria				23.136726300205044
+1177730281	0.007017517243415516	Listeria monocytogenes_B	Listeria	Listeriaceae	Lactobacillales	Bacilli	Bacillota	905219375.0	Bacteria				21.6630757304237
+771147185	0.0038873508587934083	Alloprevotella sp045121635	Alloprevotella	Bacteroidaceae	Bacteroidales	Bacteroidia	Bacteroidota	45121635.0	Bacteria				12.000252101095251
+746794724	0.009394152218628037	Prevotella sp900313215	Prevotella	Bacteroidaceae	Bacteroidales	Bacteroidia	Bacteroidota	45119115.0	Bacteria				28.99974789890475
+unmapped	0.0												480.0
+mapped_filtered	0.0												0.0
+mapped_unclassified	0.0												2503.0

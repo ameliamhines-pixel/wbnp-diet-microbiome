@@ -1,0 +1,57 @@
+tax_id	abundance	superkingdom	phylum	class	order	family	genus	species	estimated counts
+1766880	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Ruminococcaceae	Ruminococcus	uncultured_Ruminococcaceae	1.0
+1935428	0.0847457627118644	Bacteria	Pseudomonadota	Gammaproteobacteria	Enterobacterales	Pasteurellaceae	Haemophilus	Haemophilus_parainfluenzae	5.0
+322767	0.01694915254237288	Bacteria	Bacillota	Clostridia	Peptostreptococcales-Tissierellales	Anaerovoracaceae	Mogibacterium	uncultured_bacterium	1.0
+612086	0.01694915254237288	Bacteria	Bacillota	Clostridia	Monoglobales	Monoglobaceae	Monoglobus	uncultured_bacterium	1.0
+784338	0.01694915254237288	Bacteria	Bacillota	Clostridia	Christensenellales	Christensenellaceae	Christensenellaceae_R-7_group	uncultured_bacterium	1.0
+2071606	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Ruminococcaceae	Incertae_Sedis	uncultured_bacterium	1.0
+1267836	0.01694915254237288	Bacteria	Bacillota	Clostridia	Monoglobales	Monoglobaceae	Monoglobus	uncultured_bacterium	1.0
+1109495	0.01694915254237288	Bacteria	Verrucomicrobiota	Kiritimatiellia	WCHB1-41	Incertae_Sedis	Incertae_Sedis	uncultured_bacterium	1.0
+829572	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	[Eubacterium]_coprostanoligenes_group	Incertae_Sedis	uncultured_bacterium	1.0
+1242552	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_bacterium	1.0
+1454142	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_Ruminococcaceae	1.0
+2072505	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0
+1813719	0.01694915254237288	Bacteria	Bacteroidota	Bacteroidia	Bacteroidales	Bacteroidaceae	Bacteroides	uncultured_bacterium	1.0
+2072279	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Lachnospiraceae_AC2044_group	uncultured_bacterium	1.0
+1239740	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Lachnospiraceae_AC2044_group	uncultured_bacterium	1.0
+675238	0.01694915254237288	Bacteria	Cyanobacteriota	Vampirivibrionia	Gastranaerophilales	Gastranaerophilaceae	CAG-196	uncultured_bacterium	1.0
+1237969	0.01694950376668029	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.000020722234137
+2072020	0.03389830508474576	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	2.0
+753532	0.01694915254237288	Bacteria	Actinomycetota	Actinobacteria	Propionibacteriales	Propionibacteriaceae	Cutibacterium	uncultured_bacterium	1.0
+1109137	0.01694915254237288	Bacteria	Bacillota	Clostridia	Clostridia_UCG-014	Incertae_Sedis	Incertae_Sedis	uncultured_bacterium	1.0
+2033489	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Butyrivibrio	uncultured_bacterium	1.0
+2071128	0.01694916024008504	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0000004541650174
+1246262	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Incertae_Sedis	uncultured_bacterium	1.0
+1240671	0.01694915254237288	Bacteria	Bacillota	Clostridia	Christensenellales	Christensenellaceae	Christensenellaceae_R-7_group	uncultured_bacterium	1.0
+1809949	0.01694915254237288	Bacteria	Cyanobacteriota	Vampirivibrionia	Gastranaerophilales	Gastranaerophilaceae	Incertae_Sedis	uncultured_bacterium	1.0
+1814343	0.01694915254237288	Bacteria	Bacillota	Bacilli	RF39	Incertae_Sedis	Incertae_Sedis	uncultured_bacterium	1.0
+1239730	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0
+991549	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	NK4A214_group	uncultured_rumen	1.0
+1091157	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Lachnospiraceae_NK4A136_group	uncultured_bacterium	1.0
+1240575	0.016948801318065473	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	0.9999792777658629
+1237252	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0
+1814316	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_bacterium	1.0
+1099488	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Ruminococcaceae	Hydrogenoanaerobacterium	uncultured_bacterium	1.0
+2070899	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0
+1447098	0.01694915254237288	Bacteria	Cyanobacteriota	Vampirivibrionia	Gastranaerophilales	Gastranaerophilaceae	CAG-196	uncultured_bacterium	1.0
+2068594	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	[Eubacterium]_coprostanoligenes_group	Incertae_Sedis	uncultured_bacterium	1.0
+1243565	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	[Eubacterium]_coprostanoligenes_group	Incertae_Sedis	uncultured_bacterium	1.0
+1091118	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_bacterium	1.0
+2066847	0.01694915254237288	Bacteria	Bacillota	Negativicutes	Acidaminococcales	Acidaminococcaceae	Phascolarctobacterium	uncultured_bacterium	1.0
+1095595	0.01694915254237288	Bacteria	Bacillota	Clostridia	Christensenellales	Christensenellaceae	Christensenellaceae_R-7_group	uncultured_bacterium	1.0
+1036300	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	Oscillibacter	uncultured_bacterium	1.0
+2067302	0.03389830508474576	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Lachnospiraceae_NK4A136_group	uncultured_bacterium	2.0
+357905	0.016949144844660723	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	0.9999995458349826
+782249	0.01694915254237288	Bacteria	Bacillota	Bacilli	Lactobacillales	Streptococcaceae	Streptococcus	Streptococcus_infantis	1.0
+2037042	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Butyricicoccaceae	UCG-008	uncultured_bacterium	1.0
+1292524	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_Ruminococcaceae	1.0
+1097361	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_bacterium	1.0
+2072039	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	UCG-010	Incertae_Sedis	uncultured_bacterium	1.0
+1239890	0.01694915254237288	Bacteria	Bacillota	Clostridia	Lachnospirales	Lachnospiraceae	Butyribacter	uncultured_bacterium	1.0
+1036123	0.01694915254237288	Bacteria	Bacillota	Clostridia	Christensenellales	Christensenellaceae	Christensenellaceae_R-7_group	uncultured_bacterium	1.0
+1098093	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	[Eubacterium]_coprostanoligenes_group	Incertae_Sedis	uncultured_bacterium	1.0
+1298802	0.01694915254237288	Bacteria	Bacillota	Clostridia	Oscillospirales	Oscillospiraceae	UCG-005	uncultured_bacterium	1.0
+381142	0.01694915254237288	Bacteria	Pseudomonadota	Alphaproteobacteria	Hyphomicrobiales	Beijerinckiaceae	Methylorubrum	Methylorubrum_populi	1.0
+unmapped	0.0								8.0
+mapped_filtered	0.0								0.0
+mapped_unclassified	0.0								4.0

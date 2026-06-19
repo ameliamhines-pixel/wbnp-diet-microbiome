@@ -1,0 +1,47 @@
+tax_id	abundance	species	genus	family	order	class	phylum	clade	superkingdom	subspecies	species subgroup	species group	estimated counts
+215829	0.017857142857142856	NK3A76 sp000686125	NK3A76	Ruminococcaceae	Oscillospirales	Clostridia	Bacillota	686125.0	Bacteria				1.0
+1541225796	0.08928571428571429	Haemophilus_D parainfluenzae	Haemophilus_D	Pasteurellaceae	Enterobacterales	Gammaproteobacteria	Pseudomonadota	16127215.0	Bacteria				5.0
+345880266	0.017857142857142856	Crickella sp040308005	Crickella	Anaerovoracaceae	Peptostreptococcales	Clostridia	Bacillota	40308005.0	Bacteria				1.0
+1460018723	0.020968489355346943	Faecousia sp900540635	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	41329315.0	Bacteria				1.1742354038994287
+212210421	0.06854145896796095	Faecousia sp900544945	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	902485565.0	Bacteria				3.838321702205813
+1223935636	0.017857142857142856	Anaerozeibacter quisquiliarum	Anaerozeibacter	Aristaeellaceae	Christensenellales	Clostridia	Bacillota	51162045.0	Bacteria				1.0
+119057305	0.017857142857142856	Faecivicinus sp944353735	Faecivicinus	Aristaeellaceae	Christensenellales	Clostridia	Bacillota	963928865.0	Bacteria				1.0
+655459131	0.017857142857142856	UBA5905 sp002437905	UBA5905	Acutalibacteraceae	Oscillospirales	Clostridia	Bacillota	4552085.0	Bacteria				1.0
+914399772	0.017857142857142856	Roslinia caecavium	Roslinia	Monoglobaceae	Monoglobales	Clostridia	Bacillota	904419955.0	Bacteria				1.0
+1608848564	0.017857142857142856	UBA1731 sp934667425	UBA1731	UBA1067	RFP12	Kiritimatiellia	Verrucomicrobiota	34174125.0	Bacteria				1.0
+1423874776	0.03571428571428571	UMGS1532 sp900552605	UMGS1532	Acutalibacteraceae	Oscillospirales	Clostridia	Bacillota	21628605.0	Bacteria				2.0
+1196916063	0.017857142857142856	UBA11512 sp003522145	UBA11512	CAG-272	Oscillospirales	Clostridia	Bacillota	48509615.0	Bacteria				1.0
+1198620243	0.017857142857142856	UMGS1865 sp944391805	UMGS1865	CAG-272	Oscillospirales	Clostridia	Bacillota	944391805.0	Bacteria				1.0
+1082505291	0.017857143095383998	Avoscillospira stercorigallinarum	Avoscillospira	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	963927835.0	Bacteria				1.000000013341504
+786112429	0.017857142857142856	Phocaeicola plebeius_A	Phocaeicola	Bacteroidaceae	Bacteroidales	Bacteroidia	Bacteroidota	27686295.0	Bacteria				1.0
+1344596785	0.03571428571428571	Colinaster sp018056665	Colinaster	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	21531795.0	Bacteria				2.0
+1622294556	0.017857142941732716	Faecousia sp045656245	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	45656245.0	Bacteria				1.000000004737032
+297711728	0.017857142772552997	CAG-196 sp016287985	CAG-196	Gastranaerophilaceae	Gastranaerophilales	Vampirovibrionia	Cyanobacteriota	16287985.0	Bacteria				0.9999999952629678
+1598144653	0.05334719453383497	Faecousia sp000434635	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	928721865.0	Bacteria				2.9874428938947584
+1942810534	0.017857142857142856	Roseburia sp001940165	Roseburia	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	1940165.0	Bacteria				1.0
+1463737881	0.03571428571428571	Cutibacterium acnes	Cutibacterium	Propionibacteriaceae	Propionibacteriales	Actinomycetes	Actinomycetota	30238075.0	Bacteria				2.0
+339143354	0.017857142857142856	UMGS1994 sp944386155	UMGS1994	CAG-508	TANB77	Clostridia	Bacillota	963931085.0	Bacteria				1.0
+779333254	0.017857142857142856	Eshraghiella crossota	Eshraghiella	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	47014105.0	Bacteria				1.0
+669124223	0.017857142857142856	Anaerotignum_A faecicola	Anaerotignum_A	Anaerotignaceae	Lachnospirales	Clostridia	Bacillota	3865035.0	Bacteria				1.0
+1045533687	0.03571428571428571	Pullichristensenella sp002068815	Pullichristensenella	Aristaeellaceae	Christensenellales	Clostridia	Bacillota	40772885.0	Bacteria				2.0
+25759700	0.017857142857142856	Avigastranaerophilus sp944323535	Avigastranaerophilus	Gastranaerophilaceae	Gastranaerophilales	Vampirovibrionia	Cyanobacteriota	944323535.0	Bacteria				1.0
+908627960	0.017857142857142856	Coprovivens sp910577505	Coprovivens	UBA660	RF39	Bacilli_A	Bacillota_I	965647905.0	Bacteria				1.0
+1900413750	0.017857142857142856	CAG-103 sp934589185	CAG-103	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	25992655.0	Bacteria				1.0
+2075812426	0.017857142857142856	Gallintestinimicrobium propionicum	Gallintestinimicrobium	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	37068665.0	Bacteria				1.0
+1882228982	0.017857142626856257	Faecousia sp000435995	Faecousia	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	46952955.0	Bacteria				0.9999999871039504
+1702810366	0.017857142857142856	RGIG8775 sp045612185	RGIG8775	CAG-272	Oscillospirales	Clostridia	Bacillota	45612185.0	Bacteria				1.0
+552561835	0.017857142857142856	Parasutterella gallistercoris	Parasutterella	Burkholderiaceae_F	Burkholderiales	Gammaproteobacteria	Pseudomonadota	48524965.0	Bacteria				1.0
+796740643	0.017857142857142856	JAHHUH01 sp045123075	JAHHUH01	Acidaminococcaceae	Acidaminococcales	Negativicutes	Bacillota	45123075.0	Bacteria				1.0
+1162754881	0.017857142857142856	Oscillibacter valericigenes_B	Oscillibacter	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	21531435.0	Bacteria				1.0
+1796582449	0.017857142857142856	Dorea_D sp900543415	Dorea_D	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	46971025.0	Bacteria				1.0
+1317118220	0.017857142857142856	Streptococcus timonensis	Streptococcus	Streptococcaceae	Lactobacillales	Bacilli	Bacillota	47460655.0	Bacteria				1.0
+326370004	0.017857142857142856	Acetatifactor acetigignens	Acetatifactor	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	41403625.0	Bacteria				1.0
+225714722	0.017857142857142856	UBA1740 sp041655935	UBA1740	CAG-272	Oscillospirales	Clostridia	Bacillota	41655935.0	Bacteria				1.0
+1275889582	0.017857142857142856	CAG-841 sp900544285	CAG-841	CAG-272	Oscillospirales	Clostridia	Bacillota	934402065.0	Bacteria				1.0
+326018010	0.017857142857142856	PeH17 sp000435055	PeH17	CAG-138	Christensenellales	Clostridia	Bacillota	48407135.0	Bacteria				1.0
+1082757287	0.017857142857142856	Coprococcus_C hominis	Coprococcus_C	Lachnospiraceae	Lachnospirales	Clostridia	Bacillota	928721475.0	Bacteria				1.0
+1587152000	0.017857142857142856	CAG-177 sp000431775	CAG-177	Acutalibacteraceae	Oscillospirales	Clostridia	Bacillota	21641625.0	Bacteria				1.0
+2071771412	0.017857142849188316	JAZOXB01 sp040096185	JAZOXB01	Oscillospiraceae	Oscillospirales	Clostridia	Bacillota	46983165.0	Bacteria				0.9999999995545457
+unmapped	0.0												8.0
+mapped_filtered	0.0												0.0
+mapped_unclassified	0.0												7.0
