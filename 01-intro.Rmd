@@ -10,8 +10,9 @@ editor_options:
 
 ## Libraries
 ```{r}
-
+library(ggplot2)
 library(tidyverse)
+library(vegan)
 
 ```
 
@@ -22,9 +23,11 @@ library(tidyverse)
 emu1 <- read.table("emu/barcode01_unmapped.fastq.gz_silva_results_rel-abundance.tsv", 
                    sep = "\t",
                    header = TRUE)
+
 emu_path <- list.files(path = "emu",
                        pattern = "\\.tsv$",
                        full.names = TRUE)
+
 emu_abundance <- do.call(rbind, lapply(emu_path, function(file) {
   df <- read.table(file, sep = "\t", header = TRUE)
   df$Sample_Name <- tools::file_path_sans_ext(basename(file))
@@ -46,275 +49,304 @@ taxa_summary <-
   summarize(taxa = n())
 ```
 
-## Plots
-```{r}
-# Plot of superkingdom abundance
-superkingdom_abundance <- 
-  emu_abundance %>% 
-  select(superkingdom, sample_name, estimated_counts) %>% 
-  aggregate(. ~ superkingdom + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = superkingdom)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "Superkingdom")
-superkingdom_abundance
-
-# Plot of phylum abundance
-phylum_abundance <- 
-  emu_abundance %>% 
-  select(phylum, sample_name, estimated_counts) %>% 
-  aggregate(. ~ phylum + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = phylum)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "phylum")
-phylum_abundance
-
-# Plot of class abundance
-
-class_abundance <- 
-  emu_abundance %>% 
-  select(class, sample_name, estimated_counts) %>% 
-  aggregate(. ~ class + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = class)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "class")
-class_abundance
-
-# Plot of order abundance
-
-order_abundance <- 
-  emu_abundance %>% 
-  select(order, sample_name, estimated_counts) %>% 
-  aggregate(. ~ order + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = order)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "order")
-order_abundance
-
-```
 
 ## Merge and filter metadata and emu abundance
 ```{r}
 metadata <- read.csv("Bison_nanopore_metadata (1).csv") 
    emu_abundance_merged <- merge(emu_abundance, metadata, by.x = "sample_name", 
-                                 by.y =  "BarcodeNumber") 
-     emu_abundance_filtered <- filter(emu_abundance_merged, !Name == "NEG_Extract" &
-            !Name == "POS1" &
-            !Name == "POS2" & 
-            !Name == "POS3" &
-            !Name == "POS4" &
-            !Name == "NEG_PCR1" &
-            !Name == "NEG_PCR2")
-   emu_abundance_filtered
-   
-   emu_abundance_controls <- filter(emu_abundance_merged, !Name == "RL13" &
-                                      !Name == "LB25" & 
-                                      !Name == "HC33" &
-                                      !Name == "DO23" &
-                                      !Name == "HCB1" &
-                                      !Name == "HCRD" &
-                                      !Name == "DO30" &
-                                      !Name == "GRS033" &
-                                      !Name == "DO40ALT" &
-                                      !Name == "SWG1" &
-                                      !Name == "NY17" &
-                                      !Name == "LB29" &
-                                      !Name == "DL37ALT" &
-                                      !Name == "LB21" &
-                                      !Name == "HC10" &
-                                      !Name == "GRN35" &
-                                      !Name == "WP-MR-42" &
-                                      !Name == "WP-MR-37" &
-                                      !Name == "Mik_Bison_A12" &
-                                      !Name == "Mik_Bison_B12" &
-                                      !Name == "Mik_Bison_C12" &
-                                      !Name == "Mik_Bison_D12" &
-                                      !Name == "Mik_Bison_E12" &
-                                      !Name == "Mik_Bison_F12" &
-                                      !Name == "Mik_Bison_A13" &
-                                      !Name == "Mik_Bison_B13" &
-                                      !Name == "Mik_Bison_C13" &
-                                      !Name == "Mik_Bison_D13" &
-                                      !Name == "Mik_Bison_E13" &
-                                      !Name == "Mik_Bison_F13")
-   emu_abundance_controls
+                                 by.y =  "BarcodeNumber")  
+     emu_abundance_no_controls <- filter(emu_abundance_merged, !Type == "pos" &
+            !Type == "neg")
+     emu_abundance_no_controls
+     
+     emu_abundance_wbnp_samples <- filter(emu_abundance_merged, Type == "wbnp")
+     emu_abundance_wbnp_samples
+     
+     emu_abundance_Pos_controls <- filter(emu_abundance_merged, Type == "pos")
+     emu_abundance_Pos_controls
+     
+     emu_abundance_Neg_controls <- filter(emu_abundance_merged, Type == "neg")
+     emu_abundance_Neg_controls
 
 ```
 
 ## Plot Controls
-```{r}
-# Plot of superkingdom abundance
-superkingdom_abundance_controls <- 
-  emu_abundance_controls %>% 
-  select(superkingdom, sample_name, estimated_counts) %>% 
-  aggregate(. ~ superkingdom + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = superkingdom)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "Superkingdom")
-superkingdom_abundance_controls
 
+
+
+### Plot Positives
+```{r}
 # Plot of phylum abundance
-phylum_abundance_controls <- 
-  emu_abundance_controls %>% 
+phylum_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
   select(phylum, sample_name, estimated_counts) %>% 
   aggregate(. ~ phylum + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = phylum)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "phylum")
-phylum_abundance_controls
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Phylum Abundance",
+         fill = "Phylum")
+phylum_abundance_Pos_controls
+ggsave("Figures/pos_control_phylum_abundance.jpg", phylum_abundance_Pos_controls, width = 8, height = 7, units = "in")
 
 # Plot of class abundance
-
-class_abundance_controls <- 
-  emu_abundance_controls %>% 
+class_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
   select(class, sample_name, estimated_counts) %>% 
   aggregate(. ~ class + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = class)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "class")
-class_abundance_controls
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7", "#E794C1"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Class Abundance",
+         fill = "Class")
+class_abundance_Pos_controls
+
 
 # Plot of order abundance
-
-order_abundance_controls <- 
-  emu_abundance_controls %>% 
+order_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
   select(order, sample_name, estimated_counts) %>% 
   aggregate(. ~ order + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = order)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "order")
-order_abundance_controls
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Order Abundance",
+         fill = "Order")
+order_abundance_Pos_controls
 
-#Plot of family abundance
-family_abundance_controls <- 
-  emu_abundance_controls %>% 
+# Plot of family abundance
+family_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
   select(family, sample_name, estimated_counts) %>% 
   aggregate(. ~ family + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = family)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "family")
-family_abundance_controls
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0", "#FFD5AF","#FCB076", "#F09163"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Family Abundance",
+         fill = "Family")
+family_abundance_Pos_controls
 ```
 
-## Plot just Samples
+### Plot Negatives
 ```{r}
-superkingdom_abundance_samples <- 
-  emu_abundance_filtered %>% 
-  select(superkingdom, sample_name, estimated_counts) %>% 
-  aggregate(. ~ superkingdom + sample_name, sum) %>% 
-    ggplot(., aes(x = sample_name, y = estimated_counts, fill = superkingdom)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "Superkingdom")
-superkingdom_abundance_samples
-
 # Plot of phylum abundance
-phylum_abundance_samples <- 
-  emu_abundance_filtered %>% 
+phylum_abundance_Neg_controls <- 
+  emu_abundance_Neg_controls %>% 
   select(phylum, sample_name, estimated_counts) %>% 
   aggregate(. ~ phylum + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = phylum)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "phylum")
-phylum_abundance_samples
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+
+  scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+    scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7", "#E794C1", "#EFB6D6","#E0F1FF"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Negative Control Phylum Abundance",
+         fill = "Phylum")
+phylum_abundance_Neg_controls
+ggsave("Figures/neg_controls_phylum_abundance.jpg", phylum_abundance_Neg_controls, width = 8, height = 7, units = "in")
 
 # Plot of class abundance
-
-class_abundance_samples <- 
-  emu_abundance_filtered %>% 
+class_abundance_Neg_controls <- 
+  emu_abundance_Neg_controls %>% 
   select(class, sample_name, estimated_counts) %>% 
   aggregate(. ~ class + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = class)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "class")
-class_abundance_samples
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+
+  scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+    scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#4E7705"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Negative Control Class Abundance",
+         fill = "Class")
+class_abundance_Neg_controls
 
 # Plot of order abundance
-
-order_abundance_samples <- 
-  emu_abundance_filtered %>% 
+order_abundance_Neg_controls <- 
+  emu_abundance_Neg_controls %>% 
   select(order, sample_name, estimated_counts) %>% 
   aggregate(. ~ order + sample_name, sum) %>% 
     ggplot(., aes(x = sample_name, y = estimated_counts, fill = order)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "sample", 
-         y = "proportion of counts",
-         fill = "order")
-order_abundance_samples
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+
+  scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+    scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA", "#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705","#9D654C", "#C17754","#F09163", "#FCB076","#FFD5AF"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Negative Control Phylum Abundance",
+         fill = "Order")
+order_abundance_Neg_controls
 
 ```
+
+
+## Plot WBNP Samples
+```{r}
+# Plot of phylum abundance
+phylum_abundance_samples <- 
+  emu_abundance_wbnp_samples %>% 
+  select(phylum, sample_name, estimated_counts, Herd) %>% 
+  aggregate(. ~ phylum + sample_name + Herd, sum) %>% 
+    ggplot(., aes(x = sample_name, y = estimated_counts, fill = phylum)) +
+    geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 5))+
+  facet_wrap(. ~ Herd, nrow = 1, scales = "free_x")+
+  scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "WBNP Samples Phylum by Herd",
+         fill = "Phylum")
+phylum_abundance_samples
+ggsave("Figures/wbnp_phylum_abundance_byherd.jpg", phylum_abundance_samples, width = 14, height = 7, units = "in")
+
+# Plot of class abundance
+class_abundance_samples <- 
+  emu_abundance_wbnp_samples %>% 
+  select(class, sample_name, estimated_counts, Herd) %>% 
+  aggregate(. ~ class + sample_name + Herd, sum) %>% 
+    ggplot(., aes(x = sample_name, y = estimated_counts, fill = class)) +
+    geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 5))+
+  facet_wrap(. ~ Herd, nrow = 1, scales = "free_x")+
+  scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705", "#9D654C", "#C17754","#F09163", "#FCB076","#FFD5AF"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "WBNP Samples Class by Herd",
+         fill = "Class")
+class_abundance_samples
+
+```
+
+
 
 ## Plot by Herd
 ```{r}
-superkingdom_abundance_samples <- 
-  emu_abundance_filtered %>% 
-  select(superkingdom, Name, estimated_counts) %>% 
-  aggregate(. ~ superkingdom + Name, sum) %>% 
-    ggplot(., aes(x = Name, y = estimated_counts, fill = superkingdom)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "herd", 
-         y = "proportion of counts",
-         fill = "superkingdom")
-superkingdom_abundance_samples
 
 # Plot of phylum abundance
-phylum_abundance_samples <- 
-  emu_abundance_filtered %>% 
-  select(phylum, Name, estimated_counts) %>% 
-  aggregate(. ~ phylum + Name, sum) %>% 
-    ggplot(., aes(x = Name, y = estimated_counts, fill = phylum)) +
+phylum_abundance_herd <- 
+  emu_abundance_wbnp_samples %>% 
+  select(phylum, Herd, estimated_counts) %>% 
+  aggregate(. ~ phylum + Herd, sum) %>% 
+    ggplot(., aes(x = Herd, y = estimated_counts, fill = phylum)) +
     geom_bar(stat = "identity", position = "fill")+
-    labs(x = "herd", 
-         y = "proportion of counts",
-         fill = "phylum")
-phylum_abundance_samples
-
-# Plot of class abundance
-
-class_abundance_samples <- 
-  emu_abundance_filtered %>% 
-  select(class, Name, estimated_counts) %>% 
-  aggregate(. ~ class + Name, sum) %>% 
-    ggplot(., aes(x = Name, y = estimated_counts, fill = class)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "herd", 
-         y = "proportion of counts",
-         fill = "class")
-class_abundance_samples
-
-# Plot of order abundance
-
-order_abundance_samples <- 
-  emu_abundance_filtered %>% 
-  select(order, Name, estimated_counts) %>% 
-  aggregate(. ~ order +  Name, sum) %>% 
-    ggplot(., aes(x = Name, y = estimated_counts, fill = order)) +
-    geom_bar(stat = "identity", position = "fill")+
-    labs(x = "herd", 
-         y = "proportion of counts",
-         fill = "order")
-order_abundance_samples
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 8))+
+   scale_y_continuous(expand = c(0,0), labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705"))+
+    labs(x = "Herd", 
+         y = "Proportion of Counts",
+         title = "Phylum Abundance By Herd",
+         fill = "Phylum")
+phylum_abundance_herd
+ggsave("Figures/herd_phylum_abundance.jpg", phylum_abundance_herd, width = 8, height = 7, units = "in")
 
 ```
+
+## Plot Total Reads
+```{r}
+new_labels <- c("mik" = "Mikaela Samples", "neg" = "Negative Controls", "pos" = "Positive Controls", "wbnp" = "WBNP Samples")
+total_reads <- 
+  emu_abundance_merged %>% 
+  group_by(sample_name) %>% 
+  summarize(totalreads = sum (estimated_counts)) %>% 
+  merge(., metadata, by.x = "sample_name", by.y = "BarcodeNumber") %>% 
+  ggplot(., aes(x = sample_name, y = totalreads))+
+  geom_bar(stat = "identity", fill = "#7D3560")+
+  facet_wrap(~ Type, nrow = 1, scales = "free_x", labeller = as_labeller(new_labels))+
+  scale_y_continuous(expand = c(0,0))+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), plot.title = element_text(hjust = 0.5), axis.ticks.x.bottom = element_blank(), axis.text.x.bottom = element_text(size = 5))+
+  labs(x = "Sample", y = "Total Reads", title = "Sample Total Reads")  
+total_reads
+ggsave("Figures/16S_totalreads.jpg", total_reads, width = 14, height = 7, units = "in")
+
+```
+
+
+
+## PCoA Plotting
+
+### Distance Matrix
+```{r}
+
+ra_fun <- function(x) {
+  x/sum(x)
+}
+wide_emu <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(genus, sample_name, estimated_counts) %>% 
+  aggregate(. ~ genus + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+colSums(wide_emu[, 2:54])
+
+dist_emu <-
+  wide_emu %>% 
+  column_to_rownames("genus") %>% 
+  t() %>% 
+  data.frame() %>% 
+  vegdist(., method = "bray")
+
+```
+
+## Create PCoA
+```{r}
+pcoa_genus <- 
+  cmdscale(dist_emu, eig = TRUE, add = TRUE)
+
+pcoa_genus_data <-
+  as.data.frame(pcoa_genus$points) %>% 
+  setNames(c("PCo1", "PCo2")) %>% 
+  rownames_to_column(var = "Sample") %>% 
+  merge(., metadata, by.x = "Sample", by.y = "BarcodeNumber") %>% 
+  mutate(eig = pcoa_genus$eig, 
+         perc = round((eig/sum(eig))*100, 2))
+
+pcoa_genus_plot <- 
+  ggplot(pcoa_genus_data, aes(x = PCo1, y = PCo2, color = Herd)) +
+  geom_point(size = 3) +
+  stat_ellipse() +
+  # scale _color_manual(values = c("hex1", "hex2", ..)
+  labs(x = paste("PCo1 ", pcoa_genus_data$perc[1], "%"),
+       y = paste("PCo2 ", pcoa_genus_data$perc[2], "%"),
+       title = "Herd PCoA Plot",
+       color = "Herd")+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        text = element_text(size = 14),
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5))
+pcoa_genus_plot
+ggsave("Figures/herd_pcoa.jpg", pcoa.genus.plot, width = 14, height = 7, units = "in")
+
+```
+
+
+

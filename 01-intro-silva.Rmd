@@ -1,0 +1,784 @@
+---
+author: "Amelia Hines"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Exploratory SILVA 138.2
+
+## Libraries
+```{r}
+library(ggplot2)
+library(vegan)
+library(stringr)
+library(tidyverse)
+
+```
+
+
+## Emu Data
+```{r}
+emu1 <- read.table("emu_silva138.2/barcode01_unmapped.fastq.gz_silva_results_rel-abundance.tsv", 
+                   sep = "\t",
+                   header = TRUE)
+
+emu_path <- list.files(path = "emu_silva138.2",
+                       pattern = "\\.tsv$",
+                       full.names = TRUE)
+
+emu_abundance <- do.call(rbind, lapply(emu_path, 
+                                       function(file) {
+  df <- read.table(file, 
+                   sep = "\t", 
+                   header = TRUE)
+  df$Sample_Name <- tools::file_path_sans_ext(basename(file))
+  return(df)
+})) %>% 
+  setNames(c("taxi_id", "abundance", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "estimated_counts", "sample_name")) %>% 
+  mutate(sample_name = sub("_.*", "", sample_name)) %>% 
+  filter(!taxi_id == "unmapped" &
+           !taxi_id == "mapped_filtered" &
+           !taxi_id == "mapped_unclassified")
+
+
+```
+
+```{r}
+taxa_summary <- 
+  emu_abundance  %>% 
+  group_by(sample_name) %>% 
+  summarize(taxa = n())
+```
+
+## Filter by Abundance Threshold
+```{r}
+
+emu_aggregated <- 
+  emu_abundance %>% 
+  select(sample_name, superkingdom, phylum, class, order, family, genus, species, abundance, estimated_counts) %>% 
+  aggregate(. ~ sample_name + species + genus + family + order + class + phylum + superkingdom, sum)
+
+
+emu_filtered <- 
+  emu_aggregated %>% 
+group_by(sample_name) %>% 
+  mutate(totalreads = sum(estimated_counts),
+         ra = estimated_counts/totalreads) %>% 
+  filter(ra > 0.0017) %>% 
+  select(-c(totalreads, ra))
+
+
+sum1 <- 
+  emu_filtered %>%
+  group_by(sample_name) %>% 
+  summarize(total_sample_reads = sum(estimated_counts))
+
+print(sum1)
+
+sum2 <-
+    emu_abundance %>% 
+    group_by(sample_name) %>% 
+   summarize(total_sample_reads = sum(estimated_counts))
+   print(sum2)
+   
+sum3 <-
+  emu_aggregated %>% 
+  group_by(sample_name) %>% 
+  summarize(total_sample_reads = sum(estimated_counts))
+print(sum3)
+
+
+sum4 <-
+  emu_filtered %>% 
+  group_by(sample_name) %>% 
+  summarize(total_sample_abundance = sum(abundance))
+print(sum4)
+
+```
+
+## Merge and filter metadata and emu abundance
+```{r}
+metadata <- read.csv("Bison_nanopore_metadata (1).csv") 
+   emu_abundance_merged <- merge(emu_abundance, 
+                                 metadata, 
+                                 by.x = "sample_name", 
+                                 by.y =  "BarcodeNumber") 
+   
+     emu_abundance_no_controls <- filter(emu_abundance_merged, 
+                                         !Type == "pos" &
+                                           !Type == "neg")
+     emu_abundance_no_controls
+     
+     emu_abundance_wbnp_samples <- filter(emu_abundance_merged, 
+                                          Type == "wbnp")
+     emu_abundance_wbnp_samples
+     
+     emu_abundance_Pos_controls <- filter(emu_abundance_merged, 
+                                          Type == "pos")
+     emu_abundance_Pos_controls
+     
+     emu_abundance_Neg_controls <- filter(emu_abundance_merged, 
+                                          Type == "neg")
+     emu_abundance_Neg_controls
+
+```
+
+## Changing Taxa Names
+```{r}
+emu_abundance_merged <-
+  emu_abundance_merged %>%
+  mutate(family = as.character(family), 
+         genus = as.character(genus),
+         genus = if_else(grepl("UCG-010", family, ignore.case = TRUE), "UCG-010", genus))
+
+emu_abundance_merged <- 
+  emu_abundance_merged %>%
+  mutate(family = as.character(family),
+         family = if_else(grepl("UCG-010", family, ignore.case = TRUE), "Ruminococcaceae", family))
+
+emu_abundance_merged <-
+  emu_abundance_merged %>%
+  mutate(family = as.character(family), 
+         genus = as.character(genus),
+         genus = if_else(grepl("\\[Eubacterium\\]_coprostanoligenes_group", family, ignore.case = TRUE), "[Eubacterium]_coprostanoligenes_group", genus))
+
+emu_abundance_merged <- 
+  emu_abundance_merged %>%
+  mutate(family = as.character(family),
+         family = if_else(grepl("\\[Eubacterium\\]_coprostanoligenes_group", family, ignore.case = TRUE), "Oscillospiraceae", family))
+
+emu_abundance_merged <-
+  emu_abundance_merged %>%
+  mutate(family = as.character(family), 
+         genus = as.character(genus),
+         genus = if_else(grepl("UCG-011", family, ignore.case = TRUE), "UCG-011", genus))
+
+emu_abundance_merged <- 
+  emu_abundance_merged %>%
+  mutate(family = as.character(family),
+         family = if_else(grepl("UCG-011", family, ignore.case = TRUE), "Ruminococcaceae", family))
+```
+
+## Plot Controls
+
+### Plot Positives
+```{r}
+# Plot of phylum abundance
+superkingdom_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
+  select(superkingdom, 
+         sample_name, 
+         estimated_counts) %>% 
+  aggregate(. ~ superkingdom + sample_name, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = superkingdom)) +
+    geom_bar(stat = "identity", 
+             position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), 
+                                                                                        labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample SuperkingdomAbundance",
+         fill = "Superkingdom")
+superkingdom_abundance_Pos_controls
+
+# Plot of phylum abundance
+phylum_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
+  select(phylum, 
+         sample_name, 
+         estimated_counts) %>% 
+  aggregate(. ~ phylum + sample_name, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = phylum)) +
+    geom_bar(stat = "identity", 
+             position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), 
+                                                                                        labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Phylum Abundance",
+         fill = "Phylum")
+phylum_abundance_Pos_controls
+ggsave("Figures/pos_control_phylum_abundance_silva.jpg",
+       phylum_abundance_Pos_controls, 
+       width = 8, 
+       height = 7, 
+       units = "in")
+
+
+# Plot of family abundance
+family_abundance_Pos_controls <- 
+  emu_abundance_Pos_controls %>% 
+  select(family, 
+         sample_name, 
+         estimated_counts) %>% 
+  aggregate(. ~ family + sample_name, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = family)) +
+    geom_bar(stat = "identity", 
+             position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+                scale_y_continuous(expand = c(0,0), 
+                   labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0", "#FFD5AF","#FCB076", "#F09163"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Sample Family Abundance",
+         fill = "Family")
+family_abundance_Pos_controls
+
+```
+
+## Plot Species Abundance
+```{r}
+ra_fun <- function(x) {
+  x/sum(x)
+}
+# Convert long to wide dataset
+wide_emu_pos_control_species <- 
+  emu_abundance_merged %>% 
+  filter(Type == "pos") %>% 
+  select(species, sample_name, estimated_counts) %>% 
+  aggregate(. ~ species + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+species_abundance_Pos_controls <-
+  wide_emu_pos_control_species %>% 
+  select(species, all_of(emu_abundance_Pos_controls$sample_name)) %>%
+  aggregate(. ~ species, sum) %>% 
+  mutate(TotalReads = rowSums(across(emu_abundance_Pos_controls$sample_name))) %>% 
+  arrange(., desc(TotalReads)) %>% 
+
+  mutate(Group = ifelse(row_number() < 16, species, "Other")) %>% 
+
+  select(!TotalReads) %>% 
+
+  pivot_longer(!c(species, Group), names_to = "Sample", values_to = "Reads") %>% 
+  group_by(Group, Sample) %>% 
+  summarize(PlotReads = sum(Reads), .groups = "drop") %>%
+  data.frame()  %>%
+  mutate(Group = factor(Group),
+         Group = forcats::fct_relevel(Group, "Other", after = Inf)) %>%
+ggplot (., aes(x = Sample, 
+               y = PlotReads, 
+               fill = Group))+
+          geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+
+   scale_y_continuous(expand = c(0,0), 
+                      labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Positive Control Species Abundance",
+         fill = "Species")
+species_abundance_Pos_controls
+ggsave("Figures/pos_controls_species_abundance_silva.jpg", species_abundance_Pos_controls, 
+       width = 8, 
+       height = 7, 
+       units = "in")
+```
+
+### Plot Negatives
+```{r}
+# Plot of phylum abundance
+phylum_abundance_Neg_controls <- 
+  emu_abundance_Neg_controls %>% 
+  select(phylum, sample_name, estimated_counts) %>% 
+  aggregate(. ~ phylum + sample_name, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = phylum)) +
+    geom_bar(stat = "identity", 
+             position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5),
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+
+  scale_y_continuous(expand = c(0,0), 
+                     labels = scales::percent)+
+    scale_fill_manual(values = c("#7D3560","#A1527F", "#CC79A7", "#E794C1", "#EFB6D6","#E0F1FF", "#B0DAF9"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Negative Control Phylum Abundance",
+         fill = "Phylum")
+phylum_abundance_Neg_controls
+ggsave("Figures/neg_controls_phylum_abundance_silva.jpg", phylum_abundance_Neg_controls, 
+       width = 8, 
+       height = 7, 
+       units = "in")
+
+```
+
+
+## Plot WBNP Samples
+
+### Plot Phylum Abundance
+```{r}
+phylum_abundance_samples <- 
+  emu_abundance_wbnp_samples %>% 
+  select(phylum, sample_name, estimated_counts, Herd) %>% 
+  aggregate(. ~ phylum + sample_name + Herd, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = phylum)) +
+    geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 5))+
+  facet_wrap(. ~ Herd, 
+             nrow = 1, 
+             scales = "free_x")+
+  scale_y_continuous(expand = c(0,0), 
+                     labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "WBNP Samples Phylum by Herd",
+         fill = "Phylum")
+phylum_abundance_samples
+ggsave("Figures/wbnp_phylum_abundance_byherd_silva.jpg", 
+       phylum_abundance_samples, 
+       width = 14, 
+       height = 7, 
+       units = "in")
+
+```
+
+### Plot Class Abundance
+```{r}
+
+class_abundance_samples <- 
+  emu_abundance_wbnp_samples %>% 
+  select(class, sample_name, estimated_counts, Herd) %>% 
+  aggregate(. ~ class + sample_name + Herd, sum) %>% 
+    ggplot(., aes(x = sample_name, 
+                  y = estimated_counts, 
+                  fill = class)) +
+    geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 5))+
+  facet_wrap(. ~ Herd, 
+             nrow = 1, 
+             scales = "free_x")+
+  scale_y_continuous(expand = c(0,0), 
+                     labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705", "#9D654C", "#C17754","#F09163", "#FCB076","#FFD5AF"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "WBNP Samples Class by Herd",
+         fill = "Class")
+class_abundance_samples
+```
+
+### Plot Family Abundance
+
+```{r}
+
+ra_fun <- function(x) {
+  x/sum(x)
+}
+# Convert long to wide dataset
+wide_emu_family <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(family, sample_name, estimated_counts) %>% 
+  aggregate(. ~ family + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+family_abundance_samples <-
+  wide_emu_family %>% 
+# select taxonomic level of interest and all samples (that are each columns)
+  select(family, all_of(emu_abundance_wbnp_samples$sample_name)) %>%
+# aggregate based  on taxonomic level of interest
+  aggregate(. ~ family, sum) %>% 
+# create column of sum of reads per each family
+  mutate(TotalReads = rowSums(across(emu_abundance_wbnp_samples$sample_name))) %>% 
+# sort dataframe based on total reads in descending order (max at top)
+  arrange(., desc(TotalReads)) %>% 
+# create a group column, pick the top 16 families with the most reads and label them with Family name, name all others "Other"
+  mutate(Group = ifelse(row_number() < 16, family, "Other")) %>% 
+# get rid of total reads column, unneeded
+  select(!TotalReads) %>% 
+# pivot to long format, keeping Family and Group columns separate
+  pivot_longer(!c(family, Group), names_to = "Sample", values_to = "Reads") %>% 
+# Group by new Group variable and Sample
+  group_by(Group, Sample) %>% 
+# create variable to sum reads for each Group (16 families + Other)
+  summarize(PlotReads = sum(Reads), .groups = "drop") %>%
+  data.frame()  %>%
+  mutate(Group = factor(Group),
+         Group = forcats::fct_relevel(Group, "Other", after = Inf)) %>%
+ggplot (., aes(x = Sample, 
+               y = PlotReads, 
+               fill = Group))+
+          geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+
+   scale_y_continuous(expand = c(0,0), 
+                      labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0"))+
+    labs(x = "Sample", 
+         y = "Proportion of Counts",
+         title = "Family Abundance by Sample",
+         fill = "Family")
+family_abundance_samples
+ggsave("Figures/wbnp_family_abundance_silva.jpg", 
+       family_abundance_samples, 
+       width = 14, 
+       height = 7, 
+       units = "in")
+```
+
+
+
+## Plot by Herd
+
+### Plot Phylum Abundance
+```{r}
+
+# Plot of phylum abundance
+phylum_abundance_herd <- 
+  emu_abundance_wbnp_samples %>% 
+  select(phylum, Herd, estimated_counts) %>% 
+  aggregate(. ~ phylum + Herd, sum) %>% 
+    ggplot(., aes(x = Herd, 
+                  y = estimated_counts, 
+                  fill = phylum)) +
+    geom_bar(stat = "identity", 
+             position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+
+   scale_y_continuous(expand = c(0,0), 
+                      labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0", "#BDEC6F", "#97CE2F",  "#6D9F06", "#4E7705"))+
+    labs(x = "Herd", 
+         y = "Proportion of Counts",
+         title = "Phylum Abundance By Herd",
+         fill = "Phylum")
+phylum_abundance_herd
+ggsave("Figures/herd_phylum_abundance_silva.jpg", 
+       phylum_abundance_herd, 
+       width = 8, 
+       height = 7, 
+       units = "in")
+
+```
+
+### Plot Family Abundance
+```{r}
+#Plot of family abundance
+ra_fun <- function(x) {
+  x/sum(x)
+}
+# Convert long to wide dataset
+wide_emu_family_herd <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(family, Herd, estimated_counts) %>% 
+  aggregate(. ~ family + Herd, sum) %>% 
+pivot_wider(names_from = "Herd", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+family_abundance_herd <-
+  wide_emu_family_herd %>% 
+# select taxonomic level of interest and all samples (that are each columns)
+  select(family, all_of(emu_abundance_wbnp_samples$Herd)) %>%
+# aggregate based  on taxonomic level of interest
+  aggregate(. ~ family, sum) %>% 
+# create column of sum of reads per each family
+  mutate(TotalReads = rowSums(across(emu_abundance_wbnp_samples$Herd))) %>% 
+# sort dataframe based on total reads in descending order (max at top)
+  arrange(., desc(TotalReads)) %>% 
+# create a group column, pick the top 16 families with the most reads and label them with Family name, name all others "Other"
+  mutate(Group = ifelse(row_number() < 16, family, "Other")) %>% 
+# get rid of total reads column, unneeded
+  select(!TotalReads) %>% 
+# pivot to long format, keeping Family and Group columns separate
+  pivot_longer(!c(family, Group), names_to = "Herd", values_to = "Reads") %>% 
+# Group by new Group variable and Sample
+  group_by(Group, Herd) %>% 
+# create variable to sum reads for each Group (16 families + Other)
+  summarize(PlotReads = sum(Reads), .groups = "drop") %>%
+  data.frame()  %>%
+  mutate(Group = factor(Group),
+         Group = forcats::fct_relevel(Group, "Other", after = Inf)) %>%
+ggplot (., aes(x = Herd, 
+               y = PlotReads, 
+               fill = Group))+
+          geom_bar(stat = "identity", position = "fill")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 8))+
+   scale_y_continuous(expand = c(0,0), 
+                      labels = scales::percent)+
+  scale_fill_manual(values = c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6", "#E0F1FF", "#B0DAF9", "#73B8EF", "#2382DA","#084C8A", "#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7", "#DDFFA0"))+
+    labs(x = "Herd", 
+         y = "Proportion of Counts",
+         title = "Family Abundance by Herd",
+         fill = "Family")
+family_abundance_herd
+ggsave("Figures/herd_family_abundance_silva.jpg",
+       family_abundance_herd,
+       width = 8,
+       height = 7,
+       units = "in")
+
+```
+
+
+## Plot Reads
+
+### Plot Total Reads
+```{r}
+new_labels <- c("panp" = "PANP Samples", 
+                "neg" = "Negative Controls", 
+                "pos" = "Positive Controls", 
+                "wbnp" = "WBNP Samples")
+total_reads <- 
+  emu_abundance_merged %>% 
+  group_by(sample_name) %>% 
+  summarize(totalreads = sum (estimated_counts)) %>% 
+  merge(., metadata, 
+        by.x = "sample_name", 
+        by.y = "BarcodeNumber") %>% 
+  ggplot(., aes(x = sample_name, 
+                y = totalreads))+
+  geom_bar(stat = "identity", 
+           fill = "#7D3560")+
+  facet_wrap(~ Type, 
+             nrow = 1, 
+             scales = "free_x", 
+             labeller = as_labeller(new_labels))+
+  scale_y_continuous(expand = c(0,0))+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1), 
+        plot.title = element_text(hjust = 0.5), 
+        axis.ticks.x.bottom = element_blank(), 
+        axis.text.x.bottom = element_text(size = 5))+
+  labs(x = "Sample", 
+       y = "Total Reads", 
+       title = "Sample Total Reads")  
+total_reads
+ggsave("Figures/16S_totalreads_silva.jpg", 
+       total_reads, 
+       width = 14, 
+       height = 7, 
+       units = "in")
+
+```
+
+
+## PCoA Plotting
+
+### Distance Matrix
+```{r}
+
+ra_fun <- function(x) {
+  x/sum(x)
+}
+wide_emu_genus <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(genus, sample_name, estimated_counts) %>% 
+  aggregate(. ~ genus + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+colSums(wide_emu_genus[, 2:54])
+
+dist_emu <-
+  wide_emu_genus %>% 
+  column_to_rownames("genus") %>% 
+  t() %>% 
+  data.frame() %>% 
+  vegdist(., method = "bray")
+
+```
+
+### Create PCoA
+```{r}
+pcoa_genus <- 
+  cmdscale(dist_emu, eig = TRUE, add = TRUE)
+
+pcoa_genus_data <-
+  as.data.frame(pcoa_genus$points) %>% 
+  setNames(c("PCo1", "PCo2")) %>% 
+  rownames_to_column(var = "Sample") %>% 
+  merge(., metadata, by.x = "Sample", by.y = "BarcodeNumber") %>% 
+  mutate(eig = pcoa_genus$eig, 
+         perc = round((eig/sum(eig))*100, 2))
+
+pcoa_genus_plot <- 
+  ggplot(pcoa_genus_data, aes(x = PCo1, y = PCo2, color = Herd)) +
+  geom_point(size = 2) +
+  stat_ellipse() +
+  scale_color_manual(values = c("#E794C1", "#73B8EF","#BDEC6F", "#FCB076", "#B7B7B7", "#6a51a3", "#a6611a", "#43BA8F", "#d7301f"))+
+  labs(x = paste("PCo1 ", pcoa_genus_data$perc[1], "%"),
+       y = paste("PCo2 ", pcoa_genus_data$perc[2], "%"),
+       title = "Herd PCoA Plot",
+       color = "Herd")+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        text = element_text(size = 14),
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5))
+pcoa_genus_plot
+ggsave("Figures/herd_pcoa_silva.jpg", pcoa_genus_plot, width = 14, height = 7, units = "in")
+
+```
+
+
+## Total Reads per Taxa Level
+
+### Determining Known and Unknown
+```{r}
+
+wide_emu_order <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(order, sample_name, estimated_counts) %>% 
+  aggregate(. ~ order + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+unclass_order <-
+  wide_emu_order %>% 
+  select(order, all_of(emu_abundance_wbnp_samples$sample_name)) %>% 
+  aggregate(. ~ order, sum) %>% 
+  mutate(status = if_else(order %in% c("Incertae_Sedis" ), "Unknown", "Known")) %>% 
+  select(!order) %>% 
+  aggregate(. ~ status, sum) %>% 
+  column_to_rownames("status") %>% 
+  t() %>% 
+  data.frame() %>% 
+  rownames_to_column("sample_name") %>% 
+  pivot_longer(!sample_name, names_to = "Group", values_to = "Reads") %>% 
+  mutate(Taxon = "Order")
+  
+
+unclass_family <-
+  wide_emu_family %>% 
+  select(family, all_of(emu_abundance_wbnp_samples$sample_name)) %>% 
+  aggregate(. ~ family, sum) %>% 
+  mutate(status = if_else(family %in% c("Coriobacteriales_Incertae_Sedis", "Incertae_Sedis" ), "Unknown", "Known")) %>% 
+  select(!family) %>% 
+  aggregate(. ~ status, sum) %>% 
+  column_to_rownames("status") %>% 
+  t() %>% 
+  data.frame() %>% 
+  rownames_to_column("sample_name") %>% 
+  pivot_longer(!sample_name, names_to = "Group", values_to = "Reads") %>% 
+  mutate(Taxon = "Family")
+
+unclass_genus <-
+  wide_emu_genus %>% 
+  select(genus, all_of(emu_abundance_wbnp_samples$sample_name)) %>% 
+  aggregate(. ~ genus, sum) %>% 
+  mutate(status = if_else(genus %in% c("Incertae_Sedis" ), "Unknown", "Known")) %>% 
+  select(!genus) %>% 
+  aggregate(. ~ status, sum) %>% 
+  column_to_rownames("status") %>% 
+  t() %>% 
+  data.frame() %>% 
+  rownames_to_column("sample_name") %>% 
+  pivot_longer(!sample_name, names_to = "Group", values_to = "Reads") %>% 
+  mutate(Taxon = "Genus")
+
+wide_emu_species <- 
+  emu_abundance_merged %>% 
+  filter(Type == "wbnp") %>% 
+  select(species, sample_name, estimated_counts) %>% 
+  aggregate(. ~ species + sample_name, sum) %>% 
+pivot_wider(names_from = "sample_name", values_from = "estimated_counts") %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  mutate(across(where(is.numeric), ra_fun))
+
+  unclass_species <-
+  wide_emu_species %>% 
+  select(species, all_of(emu_abundance_wbnp_samples$sample_name)) %>% 
+  aggregate(. ~ species, sum) %>% 
+  mutate(status = ifelse(species %in% c("gut_metagenome", "human_gut", "bactrium_enrichment", "metagenome", "bacterium", "iron-reducing_bacterium", "unidentified_rumen", "rumen_bacterium", "unidentified", "wallaby_gut") | grepl("uncultured", species) | grepl("_sp.", species), "Unknown", "Known")) %>% 
+  select(!species) %>% 
+  aggregate(. ~ status, sum) %>% 
+  column_to_rownames("status") %>% 
+  t() %>% 
+  data.frame() %>% 
+  rownames_to_column("sample_name") %>% 
+  pivot_longer(!sample_name, names_to = "Group", values_to = "Reads") %>% 
+  mutate(Taxon = "Species")
+
+```
+
+### Plotting
+```{r}
+taxa_level_unclass <-
+  do.call("rbind", list(unclass_species, unclass_genus, unclass_family, unclass_order)) %>% 
+  mutate(Taxon = factor(Taxon, levels = c("Species", "Genus", "Family", "Order")))
+
+taxa_level_unclass_plot <-
+taxa_level_unclass %>% 
+  ggplot(., aes(x = Taxon, y = Reads, fill = Group)) +
+  geom_bar(stat = "identity", position = "fill") + 
+  scale_fill_manual(values = c("gray80", "gray30")) +
+  scale_y_continuous(expand = c(0,0), 
+                      labels = scales::percent)+
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        text = element_text(size = 20))+
+  labs(x = "Taxon",
+       y = "Reads",
+       title = "Classified Reads Per Taxon")
+taxa_level_unclass_plot
+
+ggsave("Figures/classified_reads_per_taxa_silva.jpg",
+       taxa_level_unclass_plot,
+       width = 8,
+       height = 7,
+       units = "in")
+```
+
+
